@@ -7,6 +7,7 @@ import java.math.RoundingMode;
 @Entity
 @Table(name = "docenten")
 //Je mag @Table weglaten als de table naam gelijk is aan de class naam.
+@NamedQuery(name = "Docent.findByWeddeBetween", query = "select d from Docent d where d.wedde between :van and :tot order by d.wedde, d.id")
 public class Docent {
     @GeneratedValue(strategy = GenerationType.IDENTITY) @Id private long id;
     private String voornaam;
