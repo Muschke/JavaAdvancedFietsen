@@ -43,7 +43,10 @@ class JpaDocentRepository implements DocentRepository{
     } */
     @Override
     public List<Docent> findByWeddeBetween(BigDecimal van, BigDecimal tot) {
-        return manager.createNamedQuery("Docent.findByWeddeBetween", Docent.class);
+        return manager.createNamedQuery("Docent.findByWeddeBetween", Docent.class)
+                .setParameter("van", van)
+                .setParameter("tot", tot)
+                .getResultList();
     }
     @Override
     public List<String> findemailAdressen() {
@@ -63,5 +66,11 @@ class JpaDocentRepository implements DocentRepository{
         //Volgende query geeft per wedde het aantal docenten met die wedde. Zo kan je groepen tellen dus
         return manager.createQuery("select new be.vdab.fietsen.projections.AantalDocentenPerWedde" +
                 "(d.wedde, count(d)) from  Docent d group by d.wedde", AantalDocentenPerWedde.class).getResultList();
+    }
+    @Override
+    public int algemeneOpslag(BigDecimal percentage) {
+        return manager.createNamedQuery("Docent.algemenOpslag")
+                .setParameter("percentage", percentage)
+                .executeUpdate();
     }
 }

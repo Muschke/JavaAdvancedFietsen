@@ -112,6 +112,13 @@ private final EntityManager entityManager;
                 .extracting(AantalDocentenPerWedde::getAantal)
                 .isEqualTo((long) super.countRowsInTableWhere(DOCENTEN, "wedde = 1000"));
     }
+    @Test void algemeneOpslag() {
+        //eerste controle is dat je evenveel rijen opslag hebt gegeven als er rijen zijn
+        assertThat(jpaDocentRepository.algemeneOpslag(BigDecimal.TEN))
+                .isEqualTo(countRowsInTable(DOCENTEN));
+        assertThat(countRowsInTableWhere(DOCENTEN, "wedde = 1100 and id = " + idVanTestMan())).isOne();
+    }
+
     //aparte functies
     private long idVanTestMan() {
         return jdbcTemplate.queryForObject("select id from docenten where voornaam = 'testM'", long.class);
@@ -120,4 +127,5 @@ private final EntityManager entityManager;
         return jdbcTemplate.queryForObject(
                 "select id from docenten where voornaam = 'testV'", Long.class);
     }
+
 }
